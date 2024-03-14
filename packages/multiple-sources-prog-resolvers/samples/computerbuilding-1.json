@@ -1,0 +1,10 @@
+{
+    "id": "1",
+    "name": "My Computer Name",
+    "buildingId": "1",
+    "streetAddress1": "23 North Street",
+    "city": "Seattle",
+    "stateProvince": "WA",
+    "country": "US"
+
+}

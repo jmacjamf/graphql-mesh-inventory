@@ -1,0 +1,53 @@
+sources:
+  - name: Buildings
+    handler:
+      jsonSchema:
+        endpoint: http://localhost:3002/
+        operations:
+          - type: Query
+            field: building
+            path: /buildings/{args.id}
+            method: GET
+            responseSample: ./samples/building-1.json
+            responseTypeName: Building
+        operationHeaders:
+          # Please do not use capital letters while getting the headers
+          # Use "{context.headers['x-my-api-token']}" if you want just the value of the header
+          Authorization: Bearer {context.headers['authorization']}
+  - name: Computers
+    handler:
+      jsonSchema:
+        endpoint: http://localhost:3003/
+        operations:
+          - type: Query
+            field: computer
+            path: /computers/{args.id}
+            method: GET
+            responseSample: ./samples/computer-1.json
+            responseTypeName: Computer
+        operationHeaders:
+          # Please do not use capital letters while getting the headers
+          # Use "{context.headers['x-my-api-token']}" if you want just the value of the header
+          Authorization: Bearer {context.headers['authorization']}
+  - name: ComputerBuildings
+    handler:
+      jsonSchema:
+        endpoint: http://localhost:3003/
+        operations:
+          - type: Query
+            field: computerbuilding
+            path: /computers/{args.id}/buildings/{args.buildingId}
+            method: GET
+            responseSample: ./samples/computerbuilding-1.json
+            responseTypeName: ComputerBuilding
+        operationHeaders:
+          # Please do not use capital letters while getting the headers
+          # Use "{context.headers['x-my-api-token']}" if you want just the value of the header
+          Authorization: Bearer {context.headers['authorization']}
+transforms:
+  - filterSchema:
+      filters:
+        - Query.building
+additionalTypeDefs: |
+additionalResolvers:
+    - "./resolvers"

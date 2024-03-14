@@ -1,0 +1,22 @@
+sources:
+  - name: Computer
+    handler:
+      jsonSchema:
+        endpoint: http://localhost:3003/
+        operations:
+          - type: Query
+            field: Computer
+            path: /computers
+            method: GET
+            responseSample: ./samples/computer-inventory.json
+            responseTypeName: Computer
+        operationHeaders:
+          # Please do not use capital letters while getting the headers
+          # Use "{context.headers['x-my-api-token']}" if you want just the value of the header
+          Authorization: Bearer {context.headers['authorization']}
+transforms:
+  - filterSchema:
+      filters:
+        - Query.Computer
+additionalTypeDefs: |
+additionalResolvers:

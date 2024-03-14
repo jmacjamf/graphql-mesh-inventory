@@ -1,0 +1,28 @@
+{
+  "name": "graphql-mesh-docs-first-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "https://github.com/charlypoly/graphql-mesh-docs-first-gateway.git",
+  "author": "Charly POLY <cpoly55@gmail.com>",
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "start-single-source": "concurrently --kill-others \"yarn workspace computers-service start\" \"yarn workspace mesh-single-source start\"",
+    "start-computer-inventory-source": "concurrently --kill-others \"yarn workspace computer-inventory-service start\" \"yarn workspace mesh-single-source start\"",
+    "start-multiple-source-no-source-definition": "concurrently --kill-others \"yarn workspace single-source-no-source-definition start\"",
+    "start-multiple-sources": "concurrently --kill-others \"yarn workspace mesh-multiple-sources start\"",
+    "start-multiple-sources-prog-resolvers": "concurrently --kill-others \"yarn workspace buildings-service start\" \"yarn workspace computers-service start\" \"yarn workspace multiple-sources-prog-resolvers start\"",
+    "start-inventory-sources": "concurrently --kill-others \"yarn workspace buildings-service start\" \"yarn workspace computers-service start\""
+  },
+  "dependencies": {
+    "@envelop/core": "^4.0.3",
+    "@graphql-mesh/transform-naming-convention": "^0.97.0",
+    "@graphql-mesh/transform-rename": "^0.97.0",
+    "concurrently": "^8.2.0",
+    "graphql": "^16.8.1"
+  }
+}

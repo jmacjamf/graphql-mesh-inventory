@@ -1,0 +1,37 @@
+schema {
+  query: Query
+}
+
+directive @example(value: ObjMap) repeatable on FIELD_DEFINITION | OBJECT | INPUT_OBJECT | ENUM | SCALAR
+
+directive @globalOptions(sourceName: String, endpoint: String, operationHeaders: ObjMap, queryStringOptions: ObjMap, queryParams: ObjMap) on OBJECT
+
+directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
+
+type Query @globalOptions(sourceName: "ComputerBuildings", endpoint: "http://localhost:3003/", operationHeaders: "{\"Authorization\":\"Bearer {context.headers['authorization']}\"}") {
+  computerbuilding(id: String, buildingId: String): ComputerBuilding @httpOperation(path: "/computers/{args.id}/buildings/{args.buildingId}", httpMethod: GET)
+}
+
+type ComputerBuilding @example(value: "{\"id\":\"1\",\"name\":\"My Computer Name\",\"buildingId\":\"1\",\"streetAddress1\":\"23 North Street\",\"city\":\"Seattle\",\"stateProvince\":\"WA\",\"country\":\"US\"}") {
+  id: String
+  name: String
+  buildingId: String
+  streetAddress1: String
+  city: String
+  stateProvince: String
+  country: String
+}
+
+scalar ObjMap
+
+enum HTTPMethod {
+  GET
+  HEAD
+  POST
+  PUT
+  DELETE
+  CONNECT
+  OPTIONS
+  TRACE
+  PATCH
+}

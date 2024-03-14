@@ -1,0 +1,10 @@
+{
+    "id": "1",
+    "name": "Building 1",
+    "streetAddress1": "123 Main Street",
+    "streetAddress2": "",
+    "city": "Dallas",
+    "stateProvince": "TX",
+    "zipPostalCode": "45607",
+    "country": "US"
+}

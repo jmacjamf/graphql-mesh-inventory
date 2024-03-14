@@ -1,0 +1,61 @@
+schema {
+  query: Query
+}
+
+directive @example(value: ObjMap) repeatable on FIELD_DEFINITION | OBJECT | INPUT_OBJECT | ENUM | SCALAR
+
+directive @globalOptions(sourceName: String, endpoint: String, operationHeaders: ObjMap, queryStringOptions: ObjMap, queryParams: ObjMap) on OBJECT
+
+directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
+
+type Query @globalOptions(sourceName: "ComputerBuildings", endpoint: "http://localhost:3003/", operationHeaders: "{\"Authorization\":\"Bearer {context.headers['authorization']}\"}") {
+  building(id: String): Building @httpOperation(path: "/buildings/{args.id}", httpMethod: GET)
+}
+
+type Building @example(value: "{\"id\":\"1\",\"name\":\"Building 1\",\"streetAddress1\":\"123 Main Street\",\"streetAddress2\":\"\",\"city\":\"Dallas\",\"stateProvince\":\"TX\",\"zipPostalCode\":\"45607\",\"country\":\"US\"}") {
+  id: String
+  name: String
+  streetAddress1: String
+  streetAddress2: String
+  city: String
+  stateProvince: String
+  zipPostalCode: String
+  country: String
+}
+
+scalar ObjMap
+
+enum HTTPMethod {
+  GET
+  HEAD
+  POST
+  PUT
+  DELETE
+  CONNECT
+  OPTIONS
+  TRACE
+  PATCH
+}
+
+type Computer @example(value: "{\"id\":\"1\",\"name\":\"My Computer Name\",\"lastIpAddress\":\"192.168.1.10\",\"supervised\":false,\"reportDate\":\"2018-10-31T18:21:48.303Z\",\"managementId\":\"3386436e-f378-485a-a010-81a33b56e6ac\",\"buildingId\":\"1\"}") {
+  id: String
+  name: String
+  lastIpAddress: String
+  supervised: Boolean
+  reportDate: DateTime
+  managementId: String
+  buildingId: String
+}
+
+"A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar DateTime
+
+type ComputerBuilding @example(value: "{\"id\":\"1\",\"name\":\"My Computer Name\",\"buildingId\":\"1\",\"streetAddress1\":\"23 North Street\",\"city\":\"Seattle\",\"stateProvince\":\"WA\",\"country\":\"US\"}") {
+  id: String
+  name: String
+  buildingId: String
+  streetAddress1: String
+  city: String
+  stateProvince: String
+  country: String
+}

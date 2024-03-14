@@ -1,0 +1,42 @@
+schema {
+  query: Query
+}
+
+directive @example(value: ObjMap) repeatable on FIELD_DEFINITION | OBJECT | INPUT_OBJECT | ENUM | SCALAR
+
+directive @globalOptions(sourceName: String, endpoint: String, operationHeaders: ObjMap, queryStringOptions: ObjMap, queryParams: ObjMap) on OBJECT
+
+directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
+
+type Query @globalOptions(sourceName: "Computer", endpoint: "http://localhost:3003/", operationHeaders: "{\"Authorization\":\"Bearer {context.headers['authorization']}\"}") {
+  Computer: Computer @httpOperation(path: "/computers", httpMethod: GET)
+}
+
+type Computer @example(value: "{\"id\":\"318\",\"uuid\":\"d2b8f847-8277-4a7f-939e-e2dc4d549dae\",\"name\":\"Antbristle\",\"lastIpAddress\":\"198.13.49.53\",\"supervised\":false,\"reportDate\":\"2018-10-31T18:21:47.081Z\",\"username\":\"Chloe Harris\",\"buildingId\":\"1\",\"room\":\"\"}") {
+  id: String
+  uuid: String
+  name: String
+  lastIpAddress: String
+  supervised: Boolean
+  reportDate: DateTime
+  username: String
+  buildingId: String
+  room: String
+}
+
+"A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar DateTime
+
+scalar ObjMap
+
+enum HTTPMethod {
+  GET
+  HEAD
+  POST
+  PUT
+  DELETE
+  CONNECT
+  OPTIONS
+  TRACE
+  PATCH
+}

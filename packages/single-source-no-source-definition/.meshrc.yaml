@@ -1,0 +1,16 @@
+  - name: Computers
+    handler:
+      jsonSchema:
+        endpoint: http://localhost:3003/
+        operations:
+          - type: Query
+            field: computer
+            path: /computers/{args.buildingId}
+            method: GET
+            responseSample: ./samples/computer-1.json
+            responseTypeName: Computers
+        operationHeaders:
+          # Please do not use capital letters while getting the headers
+          # Use "{context.headers['x-my-api-token']}" if you want just the value of the header
+          Authorization: Bearer {context.headers['authorization']}
+            - name: Computers
