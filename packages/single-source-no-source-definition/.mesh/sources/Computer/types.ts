@@ -3,7 +3,7 @@
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
 
-export namespace BuildingsTypes {
+export namespace ComputerTypes {
   export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -20,27 +20,25 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: { input: Date | string; output: Date | string; }
   ObjMap: { input: any; output: any; }
 };
 
 export type Query = {
-  building?: Maybe<Buildings>;
+  Computer?: Maybe<Computer>;
 };
 
-
-export type QuerybuildingArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Buildings = {
+export type Computer = {
   id?: Maybe<Scalars['String']['output']>;
+  uuid?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  streetAddress1?: Maybe<Scalars['String']['output']>;
-  streetAddress2?: Maybe<Scalars['String']['output']>;
-  city?: Maybe<Scalars['String']['output']>;
-  stateProvince?: Maybe<Scalars['String']['output']>;
-  zipPostalCode?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
+  lastIpAddress?: Maybe<Scalars['String']['output']>;
+  supervised?: Maybe<Scalars['Boolean']['output']>;
+  reportDate?: Maybe<Scalars['DateTime']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
+  buildingId?: Maybe<Scalars['String']['output']>;
+  room?: Maybe<Scalars['String']['output']>;
 };
 
 export type HTTPMethod =
@@ -56,7 +54,7 @@ export type HTTPMethod =
 
   export type QuerySdk = {
       /** undefined **/
-  building: InContextSdkMethod<Query['building'], QuerybuildingArgs, MeshContext>
+  Computer: InContextSdkMethod<Query['Computer'], {}, MeshContext>
   };
 
   export type MutationSdk = {
@@ -68,7 +66,7 @@ export type HTTPMethod =
   };
 
   export type Context = {
-      ["Buildings"]: { Query: QuerySdk, Mutation: MutationSdk, Subscription: SubscriptionSdk },
+      ["Computer"]: { Query: QuerySdk, Mutation: MutationSdk, Subscription: SubscriptionSdk },
       
     };
 }

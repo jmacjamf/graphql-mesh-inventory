@@ -6,8 +6,7 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { BuildingsTypes } from './sources/Buildings/types';
-import type { ComputersTypes } from './sources/Computers/types';
+import type { ComputerTypes } from './sources/Computer/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -27,35 +26,25 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  ObjMap: { input: any; output: any; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: { input: Date | string; output: Date | string; }
+  ObjMap: { input: any; output: any; }
 };
 
 export type Query = {
-  building?: Maybe<Buildings>;
-  computer?: Maybe<Computers>;
+  Computer?: Maybe<Computer>;
 };
 
-
-export type QuerybuildingArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QuerycomputerArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Buildings = {
+export type Computer = {
   id?: Maybe<Scalars['String']['output']>;
+  uuid?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  streetAddress1?: Maybe<Scalars['String']['output']>;
-  streetAddress2?: Maybe<Scalars['String']['output']>;
-  city?: Maybe<Scalars['String']['output']>;
-  stateProvince?: Maybe<Scalars['String']['output']>;
-  zipPostalCode?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
+  lastIpAddress?: Maybe<Scalars['String']['output']>;
+  supervised?: Maybe<Scalars['Boolean']['output']>;
+  reportDate?: Maybe<Scalars['DateTime']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
+  buildingId?: Maybe<Scalars['String']['output']>;
+  room?: Maybe<Scalars['String']['output']>;
 };
 
 export type HTTPMethod =
@@ -68,16 +57,6 @@ export type HTTPMethod =
   | 'OPTIONS'
   | 'TRACE'
   | 'PATCH';
-
-export type Computers = {
-  id?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  lastIpAddress?: Maybe<Scalars['String']['output']>;
-  supervised?: Maybe<Scalars['Boolean']['output']>;
-  reportDate?: Maybe<Scalars['DateTime']['output']>;
-  managementId?: Maybe<Scalars['String']['output']>;
-  buildingId?: Maybe<Scalars['String']['output']>;
-};
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
@@ -166,24 +145,22 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
-  Buildings: ResolverTypeWrapper<Buildings>;
+  Computer: ResolverTypeWrapper<Computer>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   ObjMap: ResolverTypeWrapper<Scalars['ObjMap']['output']>;
   HTTPMethod: HTTPMethod;
-  Computers: ResolverTypeWrapper<Computers>;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Query: {};
-  Buildings: Buildings;
+  Computer: Computer;
   String: Scalars['String']['output'];
   Boolean: Scalars['Boolean']['output'];
-  ObjMap: Scalars['ObjMap']['output'];
-  Computers: Computers;
   DateTime: Scalars['DateTime']['output'];
+  ObjMap: Scalars['ObjMap']['output'];
 }>;
 
 export type exampleDirectiveArgs = {
@@ -215,34 +192,19 @@ export type httpOperationDirectiveArgs = {
 export type httpOperationDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = httpOperationDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type QueryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  building?: Resolver<Maybe<ResolversTypes['Buildings']>, ParentType, ContextType, Partial<QuerybuildingArgs>>;
-  computer?: Resolver<Maybe<ResolversTypes['Computers']>, ParentType, ContextType, Partial<QuerycomputerArgs>>;
+  Computer?: Resolver<Maybe<ResolversTypes['Computer']>, ParentType, ContextType>;
 }>;
 
-export type BuildingsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Buildings'] = ResolversParentTypes['Buildings']> = ResolversObject<{
+export type ComputerResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Computer'] = ResolversParentTypes['Computer']> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  streetAddress1?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  streetAddress2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  stateProvince?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  zipPostalCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface ObjMapScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ObjMap'], any> {
-  name: 'ObjMap';
-}
-
-export type ComputersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Computers'] = ResolversParentTypes['Computers']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastIpAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   supervised?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   reportDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  managementId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   buildingId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  room?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -250,12 +212,15 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'DateTime';
 }
 
+export interface ObjMapScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ObjMap'], any> {
+  name: 'ObjMap';
+}
+
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
-  Buildings?: BuildingsResolvers<ContextType>;
-  ObjMap?: GraphQLScalarType;
-  Computers?: ComputersResolvers<ContextType>;
+  Computer?: ComputerResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
+  ObjMap?: GraphQLScalarType;
 }>;
 
 export type DirectiveResolvers<ContextType = MeshContext> = ResolversObject<{
@@ -264,7 +229,7 @@ export type DirectiveResolvers<ContextType = MeshContext> = ResolversObject<{
   httpOperation?: httpOperationDirectiveResolver<any, any, ContextType>;
 }>;
 
-export type MeshContext = BuildingsTypes.Context & ComputersTypes.Context & BaseMeshContext;
+export type MeshContext = ComputerTypes.Context & BaseMeshContext;
 
 
 const baseDir = pathModule.join(typeof __dirname === 'string' ? __dirname : '/', '..');

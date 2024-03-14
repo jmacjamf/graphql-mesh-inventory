@@ -13,7 +13,7 @@
   "scripts": {
     "start-single-source": "concurrently --kill-others \"yarn workspace computers-service start\" \"yarn workspace mesh-single-source start\"",
     "start-computer-inventory-source": "concurrently --kill-others \"yarn workspace computer-inventory-service start\" \"yarn workspace mesh-single-source start\"",
-    "start-multiple-source-no-source-definition": "concurrently --kill-others \"yarn workspace single-source-no-source-definition start\"",
+    "start-single-source-no-source-definition": "concurrently --kill-others \"yarn workspace computers-service start\" \"yarn workspace single-source-no-source-definition start\"",
     "start-multiple-sources": "concurrently --kill-others \"yarn workspace mesh-multiple-sources start\"",
     "start-multiple-sources-prog-resolvers": "concurrently --kill-others \"yarn workspace buildings-service start\" \"yarn workspace computers-service start\" \"yarn workspace multiple-sources-prog-resolvers start\"",
     "start-inventory-sources": "concurrently --kill-others \"yarn workspace buildings-service start\" \"yarn workspace computers-service start\""
